@@ -2,7 +2,7 @@
 import { computed, type Ref, ref } from 'vue'
 import { qrcodegen } from './qrcodegen.ts'
 
-const defaultPadding = 2
+const defaultPadding = 4
 const defaultOutputSize = 200
 
 const generator = qrcodegen.QrCode
@@ -132,7 +132,7 @@ function downloadPng() {
                   label="Padding"
                   type="number"
                   min="0"
-                  max="5"
+                  max="10"
                   suffix="squares"
                   class="govuk-input--width-2"
                 />
