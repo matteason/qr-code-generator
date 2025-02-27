@@ -12,6 +12,7 @@ const generator = qrcodegen.QrCode
 const data = ref('')
 const padding = ref(defaultPadding.toString())
 const backgroundColour = ref('#ffffff')
+const transparentBackground = ref(false)
 const foregroundColour = ref('#000000')
 const outputSize = ref(defaultOutputSize.toString())
 const dataMaxChars = 1000
@@ -50,7 +51,7 @@ const svgString = computed(() => {
   }
   const size = qrData.value.size + paddingInt.value * 2
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${outputSizeInt.value}" height="${outputSizeInt.value}" fill="${foregroundColour.value}"><g>
-  <rect width="100%" height="100%" fill="${backgroundColour.value}"/>
+  <rect width="100%" height="100%" fill="${transparentBackground.value ? '#ffffff' : backgroundColour.value}"${transparentBackground.value ? ' opacity="0"' : ''}/>
   	<path d="${parts.join(' ')}"/>
 </g></svg>`
 })
@@ -164,7 +165,10 @@ function downloadPng() {
                 <gv-input v-model="foregroundColour" type="color" label="Colour" />
               </div>
               <div class="govuk-grid-column-one-half-from-desktop">
-                <gv-input v-model="backgroundColour" type="color" label="Background" />
+                <gv-input v-model="backgroundColour" type="color" label="Background" form-group-class="govuk-!-margin-bottom-1" :disabled="transparentBackground" />
+                <div class="govuk-checkboxes govuk-checkboxes--small">
+                  <gv-checkbox label="Transparent background" v-model="transparentBackground"/>
+                </div>
               </div>
             </div>
           </gv-details>
@@ -206,6 +210,7 @@ function downloadPng() {
 
 .qrg-qr {
   svg {
+    background: repeating-conic-gradient(#f3f2f1 0% 25%, transparent 0% 50%) 50% / 20px 20px;
     border: 4px solid #f3f2f1;
     width: 100%;
     height: auto;
