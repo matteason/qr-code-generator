@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, type Ref, ref } from 'vue'
 import { qrcodegen } from './qrcodegen.ts'
+import { Analytics } from '@/Analytics'
+
+Analytics.trackPageView()
 
 const defaultPadding = 4
 const defaultOutputSize = 200
@@ -61,6 +64,8 @@ async function copySvg() {
   showCopiedSvg.value = true
 
   setTimeout(() => (showCopiedSvg.value = false), 2000)
+
+  Analytics.trackEvent('Copy', 'SVG')
 }
 
 function downloadSvg() {
@@ -70,6 +75,8 @@ function downloadSvg() {
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
+
+  Analytics.trackEvent('Download', 'SVG')
 }
 
 async function createPng(callback: Function) {
@@ -93,6 +100,7 @@ async function copyPng() {
     showCopiedPng.value = true
 
     setTimeout(() => (showCopiedPng.value = false), 2000)
+    Analytics.trackEvent('Copy', 'PNG')
   })
 }
 
@@ -104,6 +112,8 @@ function downloadPng() {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+
+    Analytics.trackEvent('Download', 'PNG')
   })
 }
 </script>
